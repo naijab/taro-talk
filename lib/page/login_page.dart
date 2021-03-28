@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:taro_talk/app_config.dart';
+
+import 'login_otp_page.dart';
 
 class LoginPage extends StatefulWidget {
   static final route = "/login";
@@ -15,31 +16,39 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       backgroundColor: AppConfig.primaryColor,
       body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: 120,
-                child: Image.asset(
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.all(16),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                SizedBox(
+                  height: 10,
+                ),
+                Image.asset(
                   AppConfig.logoIcon,
                 ),
-              ),
-              RaisedButton(
-                onPressed: () {
-                  // TODO Open OTP Page
-                },
-                color: Colors.black.withAlpha(7),
-                child: Text(
-                  "ดำเนินการต่อด้วยเบอร์โทรศัพท์",
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
+                SizedBox(
+                  height: 120,
                 ),
-              ),
-            ],
+              ],
+            ),
+          ),
+        ),
+      ),
+      bottomNavigationBar: Container(
+        padding: EdgeInsets.all(60),
+        child: RaisedButton(
+          onPressed: () {
+            Navigator.pushNamed(context, LoginOTPPage.route);
+          },
+          color: Colors.black.withAlpha(7),
+          child: Text(
+            "ดำเนินการต่อด้วยเบอร์โทรศัพท์",
+            style: TextStyle(
+              color: Colors.white,
+            ),
           ),
         ),
       ),

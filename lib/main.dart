@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:taro_talk/page/chat_detail_page.dart';
 import 'package:taro_talk/page/chat_list_page.dart';
+import 'package:taro_talk/page/login_otp_page.dart';
 import 'package:taro_talk/page/login_page.dart';
 
 void main() async {
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
       home: LoginPage(),
       routes: {
         LoginPage.route: (context) => LoginPage(),
+        LoginOTPPage.route: (context) => LoginOTPPage(),
         ChatListPage.route: (context) => ChatListPage(),
         ChatDetailPage.route: (context) => ChatDetailPage(),
       },
