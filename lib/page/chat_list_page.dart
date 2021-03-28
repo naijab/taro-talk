@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:taro_talk/app_config.dart';
+import 'package:taro_talk/page/contact_list_page.dart';
 
 class ChatListPage extends StatefulWidget {
   static final route = "/chat/list";
@@ -9,27 +11,31 @@ class ChatListPage extends StatefulWidget {
 }
 
 class _ChatListPageState extends State<ChatListPage> {
-  CollectionReference users = FirebaseFirestore.instance.collection('users');
-
-  Future<void> addUser() {
-    // Call the user's CollectionReference to add a new user
-    return users
-        .add({'full_name': "John Doe", 'company': "Stokes and Sons", 'age': 42})
-        .then((value) => print("User Added"))
-        .catchError((error) => print("Failed to add user: $error"));
-  }
+  final chatRef =
+      FirebaseFirestore.instance.collection(AppConfig.ChatCollection);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Chat List"),
-      ),
-      body: TextButton(
-        onPressed: addUser,
-        child: Text(
-          "Add User",
+        backgroundColor: Colors.white,
+        title: Image.asset(
+          AppConfig.logoWithText,
         ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.search,
+              color: Colors.black,
+            ),
+            onPressed: () {
+              Navigator.pushNamed(context, ContactListPage.route);
+            },
+          )
+        ],
+      ),
+      body: Center(
+        child: Text("Empty Chat"),
       ),
     );
   }

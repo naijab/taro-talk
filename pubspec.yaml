@@ -21,6 +21,12 @@ dependencies:
   cached_network_image: ^2.5.1
   image_picker: ^0.7.2+1
 
+  # Contact
+  contacts_service: ^0.4.6
+
+  # Permission
+  permission_handler: ^6.1.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

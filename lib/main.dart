@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:taro_talk/page/chat_detail_page.dart';
 import 'package:taro_talk/page/chat_list_page.dart';
+import 'package:taro_talk/page/contact_list_page.dart';
 import 'package:taro_talk/page/login_otp_page.dart';
 import 'package:taro_talk/page/login_page.dart';
 
@@ -47,6 +48,7 @@ class MyApp extends StatelessWidget {
         LoginOTPPage.route: (context) => LoginOTPPage(),
         ChatListPage.route: (context) => ChatListPage(),
         ChatDetailPage.route: (context) => ChatDetailPage(),
+        ContactListPage.route: (context) => ContactListPage()
       },
     );
   }
