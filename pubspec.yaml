@@ -27,6 +27,9 @@ dependencies:
   # Permission
   permission_handler: ^6.1.1
 
+  # Time
+  timeago: ^3.0.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

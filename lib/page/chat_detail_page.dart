@@ -14,7 +14,9 @@ class ChatDetailPage extends StatefulWidget {
 
 class _ChatDetailPageState extends State<ChatDetailPage> {
   final _db = FirebaseFirestore.instance;
-  final _authUser = FirebaseAuth.instance.currentUser;
+  final _auth = FirebaseAuth.instance;
+
+  User _user;
 
   final _scrollController = ScrollController();
   final _chatForm = GlobalKey<FormState>();
@@ -53,23 +55,35 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
         .doc("${input.mobilePhone}");
 
     // If not exist create new doc
-    if (!checkIsExist.exists) {
-      _db
-          .collection(
-            AppConfig.ChatCollection,
-          )
-          .doc("${input.mobilePhone}")
-          .set(
-        {
-          "friend_mobile_phone": input.mobilePhone,
-          "messages": [],
-        },
-      );
-    }
+    FirebaseAuth.instance.authStateChanges().listen((User user) {
+      if (user == null) {
+        print('User is currently signed out!');
+      } else {
+        print('User is signed in!');
 
-    setState(() {
-      params = input;
-      _isLoading = false;
+        if (!checkIsExist.exists) {
+          print("User ID: ${user.uid}");
+          _db
+              .collection(
+                AppConfig.ChatCollection,
+              )
+              .doc(input.mobilePhone)
+              .set(
+            {
+              "friend_name": input.name,
+              "friend_mobile_phone": input.mobilePhone,
+              "my_id": user.uid,
+              "messages": [],
+            },
+          );
+        }
+
+        setState(() {
+          _user = user;
+          params = input;
+          _isLoading = false;
+        });
+      }
     });
   }
 
@@ -104,6 +118,11 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
   }
 
   Widget _buildChat() {
+    if (_user == null) {
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
     return Column(
       mainAxisSize: MainAxisSize.max,
       children: [
@@ -124,7 +143,7 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
                 itemCount: chatList.messages.length,
                 itemBuilder: (context, index) {
                   final item = chatList.messages[index];
-                  final isMe = _authUser.uid == item.from.userId;
+                  final isMe = _user.uid == item.from.userId;
                   return Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Row(
@@ -201,9 +220,10 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
       ChatMessage(
         message: message,
         from: ChatUser(
-          userId: _authUser.uid,
-          userName: params.name,
+          userId: _user.uid,
+          userName: _user.displayName,
         ),
+        createdAt: updatedAt,
       ),
     );
 
@@ -219,13 +239,11 @@ class _ChatDetailPageState extends State<ChatDetailPage> {
 }
 
 class ChatDetailPageParams {
-  final bool isFirstTime;
   final String name;
   final String mobilePhone;
 
-  ChatDetailPageParams(
-    this.isFirstTime,
-    this.name,
-    this.mobilePhone,
-  );
+  ChatDetailPageParams({
+    @required this.name,
+    @required this.mobilePhone,
+  });
 }

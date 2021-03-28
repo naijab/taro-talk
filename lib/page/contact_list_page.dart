@@ -32,7 +32,6 @@ class _ContactListPageState extends State<ContactListPage> {
       _isLoading = true;
     });
 
-    final permissionStatus = await Permission.contacts.status;
     if (await Permission.contacts.request().isGranted) {
       List<String> names = [];
       List<String> phones = [];
@@ -104,7 +103,10 @@ class _ContactListPageState extends State<ContactListPage> {
             Navigator.pushNamed(
               context,
               ChatDetailPage.route,
-              arguments: ChatDetailPageParams(true, name, phone),
+              arguments: ChatDetailPageParams(
+                mobilePhone: phone,
+                name: name,
+              ),
             );
           },
           title: Text(name),
