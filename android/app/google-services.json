@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "529311037441",
+    "project_id": "taro-talk",
+    "storage_bucket": "taro-talk.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:529311037441:android:027a21931e1bbf63fba800",
+        "android_client_info": {
+          "package_name": "com.naijab.taro_talk"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "529311037441-373g256lss7036mn69af9hm7ab460tas.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAWyr1ECyQYQCk08UKAQfMEgKjomeMtxuc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "529311037441-373g256lss7036mn69af9hm7ab460tas.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
