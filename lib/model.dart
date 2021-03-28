@@ -1,18 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Chat {
+  String myId;
   String friendMobilePhone;
   String friendName;
-  String myId;
+
   List<ChatMessage> messages;
   Timestamp updatedAt;
 
   Chat({
-    this.friendName,
     this.myId,
+    this.friendName,
+    this.friendMobilePhone,
     this.messages,
     this.updatedAt,
-    this.friendMobilePhone,
   });
 
   Chat.fromJson(Map<String, dynamic> json) {

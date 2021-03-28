@@ -34,13 +34,10 @@ class MyApp extends StatelessWidget {
               child: CircularProgressIndicator(),
             );
           }
-          if (snapshot.hasError) {
-            return LoginPage();
-          }
           if (snapshot.hasData) {
             return ChatListPage();
           }
-          return Container();
+          return LoginPage();
         },
       ),
       routes: {

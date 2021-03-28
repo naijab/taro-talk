@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:taro_talk/app_config.dart';
 import 'package:taro_talk/page/contact_list_page.dart';
+import 'package:taro_talk/page/login_page.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 import '../model.dart';
@@ -20,7 +21,6 @@ class _ChatListPageState extends State<ChatListPage> {
   final _chatList =
       FirebaseFirestore.instance.collection(AppConfig.ChatCollection);
 
-  Query _whereCondition;
   bool _isLoading = false;
 
   @override
@@ -33,12 +33,8 @@ class _ChatListPageState extends State<ChatListPage> {
     setState(() {
       _isLoading = true;
     });
-    Query condition = _chatList.where(
-      "my_id",
-      isEqualTo: _authUser.uid,
-    );
+
     setState(() {
-      _whereCondition = condition;
       _isLoading = false;
     });
   }
@@ -54,11 +50,41 @@ class _ChatListPageState extends State<ChatListPage> {
         actions: [
           IconButton(
             icon: Icon(
-              Icons.search,
+              Icons.exit_to_app,
               color: Colors.black,
             ),
-            onPressed: () {
-              Navigator.pushNamed(context, ContactListPage.route);
+            onPressed: () async {
+              await showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text("ต้องการออกจากระบบหรือไม่"),
+                    content: Text(""),
+                    actions: <Widget>[
+                      FlatButton(
+                        child: Text("ยกเลิก"),
+                        onPressed: () {
+                          // Close Alert
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      FlatButton(
+                        child: Text("ตกลง"),
+                        onPressed: () async {
+                          // Close Alert
+                          Navigator.of(context).pop();
+                          await FirebaseAuth.instance.signOut();
+                          await Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            LoginPage.route,
+                            (route) => false,
+                          );
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
             },
           )
         ],
@@ -68,16 +94,28 @@ class _ChatListPageState extends State<ChatListPage> {
               child: CircularProgressIndicator(),
             )
           : _buildChatList(),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(
+          Icons.search,
+        ),
+        onPressed: () {
+          Navigator.pushNamed(context, ContactListPage.route);
+        },
+      ),
     );
   }
 
   Widget _buildChatList() {
-    if (_whereCondition == null) {
-      return Container();
-    }
     return StreamBuilder<QuerySnapshot>(
-      stream: _whereCondition.snapshots(),
+      stream: _chatList.snapshots(),
       builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Container(
+            child: Center(
+              child: Text("Error : ${snapshot.error.toString()}"),
+            ),
+          );
+        }
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
             child: CircularProgressIndicator(),

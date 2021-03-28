@@ -30,12 +30,16 @@ dependencies:
   # Time
   timeago: ^3.0.2
 
+  # RxDart
+  rxdart: ^0.26.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
 dependency_overrides:
   firebase: ">=7.0.0"
+  rxdart: ^0.26.0
 
 flutter:
   uses-material-design: true

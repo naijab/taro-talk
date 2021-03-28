@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:taro_talk/app_config.dart';
+import 'package:taro_talk/page/chat_list_page.dart';
 
 class LoginOTPPage extends StatefulWidget {
   static final route = "/login/otp";
@@ -179,7 +180,7 @@ class _LoginOTPPageState extends State<LoginOTPPage> {
                               },
                               color: Colors.black.withAlpha(7),
                               child: Text(
-                                "ส่ง OTP",
+                                "ยืนยัน",
                                 style: TextStyle(
                                   color: Colors.white,
                                 ),
@@ -202,7 +203,7 @@ class _LoginOTPPageState extends State<LoginOTPPage> {
     });
     try {
       await auth.verifyPhoneNumber(
-        phoneNumber: "+66" + _mobileController.text,
+        phoneNumber: "+66" + _mobileController.text.substring(1),
         verificationCompleted: (PhoneAuthCredential credential) async {},
         verificationFailed: (FirebaseAuthException e) {},
         codeSent: (String verificationId, int resendToken) {
@@ -231,6 +232,11 @@ class _LoginOTPPageState extends State<LoginOTPPage> {
           verificationId: _verificationId,
           smsCode: _otpController.text,
         ),
+      );
+      await Navigator.pushNamedAndRemoveUntil(
+        context,
+        ChatListPage.route,
+        (route) => false,
       );
       print("Verity OTP success : ${user.toString()}");
     } catch (e) {
